@@ -1,0 +1,12 @@
+<nz-list class="eam-map-amcardlist" [nzDataSource]="data" [nzItemLayout]="'vertical'" [nzRenderItem]="item" [nzSplit]=false [nzLoadMore]="loadMore">
+  <ng-template #item let-item>
+    <nz-list-item style="padding:0 10px 10px 10px">
+      <eam-amcard style="width:100%"></eam-amcard>
+    </nz-list-item>
+  </ng-template>
+  <ng-template #loadMore>
+    <div class="loadmore">
+      <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
+    </div>
+  </ng-template>
+</nz-list>

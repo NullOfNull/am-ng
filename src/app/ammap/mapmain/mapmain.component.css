@@ -1,6 +1,11 @@
-.demo-map {
-        position: absolute;
-        height: 100%;
+.eam_map {
+        height: 800px;
         width: 100%;
         bottom: 0px
     }
+.logo{
+    display: inline-block;
+    font-weight: bold;
+    font-size: 16px;
+    color: #aabdd0;
+}

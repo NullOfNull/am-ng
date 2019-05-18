@@ -1,1 +1,25 @@
-<ngx-amap class="demo-map" [resizeEnable]="true" [center]="[116.397428, 39.90923]" [zoom]="13"></ngx-amap>
+<nz-layout class="layout">
+  <nz-header>
+    <div class="logo">快速定位</div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 60px; margin-left: 20px;display: inline-block;">
+      <li style="display:inline-block">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input amapAutocomplete placeholder="请输入地址关键字..." [city]="myCity" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon type="search"></i>
+        </ng-template>
+      </li>
+    </ul>
+  </nz-header>
+  <nz-content style="padding:10px 10px;">
+    <nz-layout style="padding:10px 0; background: #fff">
+      <nz-sider [nzWidth]="300" style="background:#fff;border-right: 1px solid #ccc">
+        <eam-amcardlist></eam-amcardlist>
+      </nz-sider>
+      <nz-content style="padding: 0 10px; min-height: 280px;">
+        <ngx-amap class="eam_map" [resizeEnable]="true" [center]="[116.397428, 39.90923]" [zoom]="13"></ngx-amap>
+      </nz-content>
+    </nz-layout>
+  </nz-content>
+</nz-layout>

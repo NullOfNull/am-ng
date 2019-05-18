@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { AmmapModule } from './ammap/ammap.module';
 
 
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -13,9 +16,8 @@ import { AmmapModule } from './ammap/ammap.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AmmapModule
+    AmmapModule,
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
