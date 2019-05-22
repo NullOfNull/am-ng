@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'eam-amcard',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./amcard.component.css']
 })
 export class AmcardComponent implements OnInit {
-
+  @Input() data: any = {};
   constructor() { }
 
   ngOnInit() {

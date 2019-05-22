@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { RestGspService } from '../../service/rest-gsp.service';
+import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'eam-amcardlist',
@@ -8,36 +9,40 @@ import { RestGspService } from '../../service/rest-gsp.service';
 })
 export class AmcardlistComponent implements OnInit {
   private _restGspService: RestGspService;
+  public pageSize: number = 5;
+  public pageTotal: number = 0;
+  public pageIndex: number = 1;
+  data: any[] = [];//与当前列表数据绑定
+  listData: Array<object> = [];//完整的list数据
   constructor(restGspService: RestGspService) {
     this._restGspService = restGspService;
   }
-  data = [
-    {
-      title: 'Title 1'
-    },
-    {
-      title: 'Title 2'
-    },
-    {
-      title: 'Title 3'
-    },
-    {
-      title: 'Title 4'
-    }
-  ];
+
   ngOnInit() {
   }
-  onLoadMore() {
-    var options = {
-      assembly: 'Genersoft.AM.Web.BizCommon',
-      className: 'Genersoft.AM.Web.BizCommon.AMTest',
-      method: 'GetInfo',
-      params: ['asdfasdf']
+  onPageChange(index: number) {
+    let offset: number = (index - 1) * this.pageSize;
+    if ((offset + this.pageSize) >= this.listData.length) {
+      this.data = this.listData.slice(offset);
     }
-    this._restGspService.invoke(options).then(function (ss) {
-      console.log(ss);
-    }).catch(function (ff) {
-      console.log(ff)
-    })
+    else {
+      this.data = this.listData.slice(offset, offset + this.pageSize);
+    }
+  }
+  /**
+   * setListData设置表单数据
+   */
+  public setListData(list: Array<object>) {
+    this.listData = list;
+    if (this.listData && this.listData.length > 0) {
+      this.pageTotal = this.listData.length;
+      this.pageIndex = 1;
+      let firstPageData = this.listData.slice(0, 5);
+      this.data = firstPageData;
+    }
+    else {
+      this.data = [];
+      this.pageTotal = 0;
+    }
   }
 }

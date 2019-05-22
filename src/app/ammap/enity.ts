@@ -1,11 +1,11 @@
-class CardInfo {
+export class CardInfo {
     CardID: string;
     AMID: string;
     AMCode: string;
     AMName: string;
     PosID: PosInfo;
 }
-class PosInfo {
+export class PosInfo {
     PosID: string;
     PosName: string;
     PosCode: string;
