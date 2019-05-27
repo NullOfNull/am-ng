@@ -9,6 +9,7 @@ import { EventEmitter } from 'protractor';
 })
 export class AmcardlistComponent implements OnInit {
   private _restGspService: RestGspService;
+  private loading: boolean = false;
   public pageSize: number = 5;
   public pageTotal: number = 0;
   public pageIndex: number = 1;
@@ -21,6 +22,7 @@ export class AmcardlistComponent implements OnInit {
   ngOnInit() {
   }
   onPageChange(index: number) {
+    this.loading = true;
     let offset: number = (index - 1) * this.pageSize;
     if ((offset + this.pageSize) >= this.listData.length) {
       this.data = this.listData.slice(offset);
@@ -28,11 +30,13 @@ export class AmcardlistComponent implements OnInit {
     else {
       this.data = this.listData.slice(offset, offset + this.pageSize);
     }
+    this.loading = false;
   }
   /**
    * setListData设置表单数据
    */
   public setListData(list: Array<object>) {
+    this.loading = true;
     this.listData = list;
     if (this.listData && this.listData.length > 0) {
       this.pageTotal = this.listData.length;
@@ -44,5 +48,6 @@ export class AmcardlistComponent implements OnInit {
       this.data = [];
       this.pageTotal = 0;
     }
+    this.loading = false;
   }
 }

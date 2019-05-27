@@ -1,8 +1,8 @@
 <nz-layout class="layout">
-    <nz-header>
+    <nz-header style="background-color: #fff">
         <div class="logo">快速定位</div>
-        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 60px; margin-left: 20px;display: inline-block;">
-            <li style="display:inline-block">
+        <ul nz-menu [nzTheme]="'light'" [nzMode]="'horizontal'" class="eam_header">
+            <li>
                 <nz-input-group [nzSuffix]="suffixIconSearch">
                     <input type="text" nz-input amapAutocomplete placeholder="请输入地址关键字..." [city]="myCity" (select)="onSelect($event)" />
                 </nz-input-group>
@@ -10,16 +10,32 @@
                     <i nz-icon type="search"></i>
                 </ng-template>
             </li>
+            <li>
+                <nz-input-group [nzSuffix]="suffixIconSearch" nzCompact>
+                    <nz-select [(ngModel)]="queryType">
+                        <nz-option [nzLabel]="'资产名称'" [nzValue]="'AMName'"></nz-option>
+                        <nz-option [nzLabel]="'资产编号'" [nzValue]="'AMCode'"></nz-option>
+                    </nz-select>
+                    <input type="email" nz-input placeholder="资产定位" style="width: 200px;" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                    <i nz-icon type="search"></i>
+                </ng-template>
+            </li>
         </ul>
+
+
     </nz-header>
-    <nz-content style="padding:10px 10px;">
-        <nz-layout style="padding:10px 0; background: #fff">
-            <nz-sider [nzWidth]="300" style="background:#fff;border-right: 1px solid #ccc">
+    <nz-content style="padding:4px;background-color: #eceff1">
+        <nz-layout style="background: #eceff1">
+            <nz-sider [nzWidth]="300" style="background-color: inherit;">
                 <eam-amcardlist #eamcardlist></eam-amcardlist>
             </nz-sider>
-            <nz-content style="padding: 0 10px; min-height: 280px;">
+            <nz-content style="min-height: 300px; padding: 4px 4px 4px 0">
                 <ngx-amap #eammap class="eam_map" [resizeEnable]="true" [center]="[116.397428, 39.90923]" [zoom]="13">
-                    <amap-marker *ngFor="let item of markers" [position]="item.pos" [extData]="item.posid" (markerClick)="onMarkerClick($event)"></amap-marker>
+                    <amap-marker-clusterer [gridSize]="80">
+                        <amap-marker *ngFor="let item of markers" [position]="item.pos" [extData]="item.posid" [inCluster]="true" (markerClick)="onMarkerClick($event)"></amap-marker>
+                    </amap-marker-clusterer>
                 </ngx-amap>
             </nz-content>
         </nz-layout>

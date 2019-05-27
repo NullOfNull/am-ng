@@ -31,5 +31,19 @@ export const MOCK_DATA = {
             { AMCode: 'ZC33001', AMName: '挖井机', CompName: '浪潮集团' },
             { AMCode: 'ZC33001', AMName: '钻井', CompName: '浪潮集团' }
         ],
+    },
+    GetCardByName:{
+        '轿车':[
+            { AMCode: 'ZC010001', AMName: '奥迪轿车', PosID: '2', pos: [117.179313, 39.114672]},
+            { AMCode: 'ZC010002', AMName: '奥迪轿车2', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC010003', AMName: '奥迪轿车3', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC010004', AMName: '奥迪轿车4', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC010005', AMName: '奥迪轿车5', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC010006', AMName: '奥迪轿车6', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC010007', AMName: '奥迪轿车7', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC010008', AMName: '奥迪轿车8', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC010009', AMName: '奥迪轿车9', PosID: '2', pos: [117.179313, 39.114672] },
+            { AMCode: 'ZC0100010', AMName: '奥迪轿车10', PosID: '2', pos: [117.179313, 39.114672] }
+        ]
     }
 }

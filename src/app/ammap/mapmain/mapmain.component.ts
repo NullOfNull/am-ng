@@ -18,6 +18,7 @@ export class MapMainComponent implements OnInit {
   private _restGspService: RestGspService;
   public markers: any;
   public cardListData: any[] = [];
+  public queryType :string = 'AMCode';
   constructor(restGspService: RestGspService) {
     this._restGspService = restGspService;
   }
