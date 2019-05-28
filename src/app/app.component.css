@@ -1,3 +1,9 @@
 body {
     background-color: #578fd2
 }
+
+.auto-item {
+    padding: 5px 12px !important;
+    line-height: 2 !important;
+    border-radius: 2px;
+}

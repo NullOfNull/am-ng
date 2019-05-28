@@ -1,5 +1,13 @@
-<nz-card [nzHoverable]="true" class="eam-map-amcard">
-  <p>编号:{{data.AMCode}}</p>
-  <p>名称:{{data.AMName}}</p>
-  <p>单位:{{data.CompName}}</p>
+<nz-card [nzHoverable]="true" [nzActions]="[actionSetting, actionEdit]" class="eam-map-amcard">
+    <p>编号:{{data.AMCode}}</p>
+    <p>名称:{{data.AMName}}</p>
+    <p>单位:{{data.CompName}}</p>
+    <p>单位:{{data.CompName}}</p>
+
+    <ng-template #actionSetting>
+        <i nz-icon nzType="environment" nzTheme="outline"></i>
+    </ng-template>
+    <ng-template #actionEdit>
+        <i nz-icon nzType="file-text" nzTheme="outline"></i>
+    </ng-template>
 </nz-card>

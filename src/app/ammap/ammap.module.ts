@@ -12,6 +12,8 @@ import zh from '@angular/common/locales/zh';
 
 import { AmcardComponent } from './amcard/amcard.component';
 import { AmcardlistComponent } from './amcardlist/amcardlist.component';
+import { BaiduMapModule } from '../../lib';
+
 
 registerLocaleData(zh);
 
@@ -22,6 +24,7 @@ registerLocaleData(zh);
     NgxAmapModule.forRoot({
       apiKey: '32768c537be1a88c4fa34c3f92c65db2'
     }),
+    BaiduMapModule.forRoot({ ak: 'KiUMBStys8zb5pX1XKOrrA5q6k9msNFR' }),
     NgZorroAntdModule,
     FormsModule,
     HttpClientModule,

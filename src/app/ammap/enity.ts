@@ -3,7 +3,9 @@ export class CardInfo {
     AMID: string;
     AMCode: string;
     AMName: string;
-    PosID: PosInfo;
+    PosID: string;
+    pos: Array<number>;
+    CompName: string;
 }
 export class PosInfo {
     PosID: string;
