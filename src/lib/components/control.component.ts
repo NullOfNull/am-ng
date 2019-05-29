@@ -55,6 +55,7 @@ export class ControlComponent implements OnInit, OnDestroy {
       return new window.BMap.MapTypeControl(toMapTypeControlOptions(options))
     }
     if (type === 'geolocation') {
+      console.log(1)
       return new window.BMap.GeolocationControl(toGeolocationOptions(options))
     }
     if (type === 'panorama') {

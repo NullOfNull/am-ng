@@ -23,7 +23,7 @@ import { nullCheck } from '../helpers/validate'
         .baidu-map-instance {
             width: 100%;
             height: 100%;
-            display: none;
+            display: block;
         }
         .baidu-map-offline {
             width: 100%;

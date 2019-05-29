@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgxAmapComponent } from 'ngx-amap';
 import { RestGspService } from 'src/app/service/rest-gsp.service';
 import { AmcardlistComponent } from '../amcardlist/amcardlist.component';
 import { MarkerClustererOptions, BMarkerClusterer } from 'src/lib/types/MarkerClusterer';
-import { Marker } from 'src/lib';
+import { Marker, MapTypeControlOptions, MapTypeControlType, MapTypeEnum, GeolocationControlOptions, NavigationControlOptions, ControlAnchor, NavigationControlType, BGeolocationControl } from 'src/lib';
 
 @Component({
   selector: 'eam-mapmain',
@@ -12,8 +11,6 @@ import { Marker } from 'src/lib';
 })
 export class MapMainComponent implements OnInit {
 
-  @ViewChild('eammap')
-  private eammap: NgxAmapComponent;
   @ViewChild('eamcardlist')
   private eamcardlist: AmcardlistComponent;
   private _restGspService: RestGspService;
@@ -24,6 +21,8 @@ export class MapMainComponent implements OnInit {
   public opts: any = {};
   public clustererOptions: MarkerClustererOptions;
   public bmarkers: Array<Marker> = [];
+  public mapTypeOpts: MapTypeControlOptions
+  public naviOpts: NavigationControlOptions
   constructor(restGspService: RestGspService) {
     this._restGspService = restGspService;
     this.opts = {
@@ -35,21 +34,29 @@ export class MapMainComponent implements OnInit {
       enableScrollWheelZoom: true,
     };
     this.clustererOptions = {};
-  }
+    this.mapTypeOpts = {
+      type: MapTypeControlType.BMAP_MAPTYPE_CONTROL_HORIZONTAL,
+      mapTypes: [MapTypeEnum.BMAP_NORMAL_MAP, MapTypeEnum.BMAP_SATELLITE_MAP]
+    }
+    this.naviOpts = {
+      anchor: ControlAnchor.BMAP_ANCHOR_TOP_LEFT,
+      type: NavigationControlType.BMAP_NAVIGATION_CONTROL_LARGE,
+    }
 
+  }
   ngOnInit() {
 
   }
+  /**
+   * 点聚合加载后事件
+   * @param e 
+   */
   markerClustererLoaded(e: BMarkerClusterer) {
-    this.getMarkers().then(data=>{
-      e.getMarkers().map(marker => {
-        marker.addEventListener("click", function (event) {
-          console.log(event)
-        });
-      })
-    })
-
+    this.getMarkers();
   }
+  /**
+   * 获取设置资产点标记
+   */
   getMarkers() {
     let options = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
@@ -78,6 +85,11 @@ export class MapMainComponent implements OnInit {
     });
     return invokeObject
   }
+  /**
+   * 设置地图位置点
+   * @param lng 
+   * @param lat 
+   */
   setMapCenter(lng: number, lat: number) {
     this.opts = {
       centerAndZoom: {
@@ -87,6 +99,10 @@ export class MapMainComponent implements OnInit {
       }
     }
   }
+  /**
+   * 定位框选择地址后执行事件
+   * @param e 
+   */
   onSelect(e) {
     console.log(e);
     let lng: number = e.poi.location.lng;
@@ -100,8 +116,12 @@ export class MapMainComponent implements OnInit {
     }
 
   }
+  /**
+   * 标记点点击事件
+   * @param e 
+   */
   onMarkerClick(e) {
-    let posid: string = e.target.getExtData();
+    let posid: string = e.marker.extData;
     let options: object = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
       className: 'Genersoft.AM.DAGL.AMDAGLCore.AMCommCore',
@@ -112,7 +132,7 @@ export class MapMainComponent implements OnInit {
       this._restGspService.invoke(options).then(data => {
         let cardList: Array<object> = data[posid];
         if (cardList) {
-          this.eamcardlist.setListData(cardList);
+          this.eamcardlist.setListData(data[posid]);
         }
         else {
           this.eamcardlist.setListData([]);
@@ -120,6 +140,9 @@ export class MapMainComponent implements OnInit {
       })
     }
   }
+  /**
+   * 资产检索点击事件
+   */
   onSearchClick() {
     if (this.queryType && this.queryValue) {
       let options: object = {
@@ -142,7 +165,6 @@ export class MapMainComponent implements OnInit {
         }
       })
     }
-
   }
 
 }

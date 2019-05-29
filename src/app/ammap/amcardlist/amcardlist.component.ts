@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { RestGspService } from '../../service/rest-gsp.service';
 import { EventEmitter } from 'protractor';
 
@@ -13,9 +13,9 @@ export class AmcardlistComponent implements OnInit {
   public pageSize: number = 5;
   public pageTotal: number = 0;
   public pageIndex: number = 1;
-  data: any[] = [];//与当前列表数据绑定
+  public data: any[] = [];//与当前列表数据绑定
   listData: Array<object> = [];//完整的list数据
-  constructor(restGspService: RestGspService) {
+  constructor(restGspService: RestGspService, private changeRef: ChangeDetectorRef) {
     this._restGspService = restGspService;
   }
 
@@ -49,5 +49,6 @@ export class AmcardlistComponent implements OnInit {
       this.pageTotal = 0;
     }
     this.loading = false;
+    this.changeRef.detectChanges();
   }
 }

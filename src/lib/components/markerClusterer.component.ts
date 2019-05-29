@@ -34,6 +34,7 @@ export class MarkerClustererComponent implements OnInit, OnChanges, OnDestroy {
   @Input() private options: MarkerClustererOptions
 
   @Output() private loaded = new EventEmitter()
+  @Output() private markerClick = new EventEmitter();
   private markerClusterer: BMarkerClusterer
 
   constructor(private _service: MapService, private scriptLoader: ScriptLoader) { }
@@ -66,6 +67,7 @@ export class MarkerClustererComponent implements OnInit, OnChanges, OnDestroy {
           if (m.options.extData) {
             marker['extData'] = m.options.extData;
           }
+          this.addListener(marker);
           return marker;
         })
       )
@@ -79,6 +81,14 @@ export class MarkerClustererComponent implements OnInit, OnChanges, OnDestroy {
     if (options.styles) {
       this.markerClusterer.setStyles(options.styles.filter(s => s).map(s => toTextIconStyle(s)))
     }
+  }
+  private addListener(marker: BMarker) {
+    marker.addEventListener('click', (e: any) => {
+      this.markerClick.emit({
+        e,
+        marker
+      })
+    })
   }
   public ngOnDestroy() {
     this.markerClusterer.clearMarkers()

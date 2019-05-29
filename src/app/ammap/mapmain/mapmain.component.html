@@ -4,7 +4,7 @@
         <ul nz-menu [nzTheme]="'light'" [nzMode]="'horizontal'" class="eam_header">
             <li>
                 <nz-input-group [nzSuffix]="suffixIconSearch" style="vertical-align: middle;">
-                    <input type="text" nz-input amapAutocomplete placeholder="请输入地址关键字..." [city]="myCity" (select)="onSelect($event)" />
+                    <input type="text" nz-input placeholder="请输入地址关键字..." (select)="onSelect($event)" />
                 </nz-input-group>
                 <ng-template #suffixIconSearch>
                     <i nz-icon type="search"></i>
@@ -39,7 +39,9 @@
                     </amap-marker-clusterer>
                 </ngx-amap> -->
                 <baidu-map #eammap class="eam_map" [options]="opts">
-                    <marker-clusterer #eammarkers [options]="clustererOptions" (loaded)="markerClustererLoaded($event)"></marker-clusterer>
+                    <control type="maptype" [options]="mapTypeOpts"></control>
+                    <control type="navigation" [options]="naviOpts"></control>
+                    <marker-clusterer #eammarkers [options]="clustererOptions" (loaded)="markerClustererLoaded($event)" (markerClick)="onMarkerClick($event)"></marker-clusterer>
                 </baidu-map>
             </nz-content>
         </nz-layout>

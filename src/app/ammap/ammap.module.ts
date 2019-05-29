@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapMainComponent } from './mapmain/mapmain.component';
-import { NgxAmapModule } from 'ngx-amap';
 
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
@@ -21,9 +20,6 @@ registerLocaleData(zh);
   declarations: [MapMainComponent, AmcardComponent, AmcardlistComponent],
   imports: [
     CommonModule,
-    NgxAmapModule.forRoot({
-      apiKey: '32768c537be1a88c4fa34c3f92c65db2'
-    }),
     BaiduMapModule.forRoot({ ak: 'KiUMBStys8zb5pX1XKOrrA5q6k9msNFR' }),
     NgZorroAntdModule,
     FormsModule,
