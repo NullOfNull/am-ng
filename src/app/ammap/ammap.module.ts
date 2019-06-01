@@ -12,12 +12,14 @@ import zh from '@angular/common/locales/zh';
 import { AmcardComponent } from './amcard/amcard.component';
 import { AmcardlistComponent } from './amcardlist/amcardlist.component';
 import { BaiduMapModule } from '../../lib';
+import { QueryListComponent } from '../components/query-list/query-list.component';
+
 
 
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [MapMainComponent, AmcardComponent, AmcardlistComponent],
+  declarations: [MapMainComponent, AmcardComponent, AmcardlistComponent, QueryListComponent],
   imports: [
     CommonModule,
     BaiduMapModule.forRoot({ ak: 'KiUMBStys8zb5pX1XKOrrA5q6k9msNFR' }),

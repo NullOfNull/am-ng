@@ -17,12 +17,11 @@ import { MarkerClustererOptions, BMarkerClusterer } from '../types/MarkerCluster
 import { ScriptLoader } from '../providers/scriptLoader'
 import { BMapInstance } from '../types/Map'
 import { BMarker } from '../types/Marker';
-import { addListener } from 'cluster';
 
 const LIB_URLS = {
   key: 'markerClusterer',
   scripts: [
-    'https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js',
+    '/assets/MarkerCluster.js',
     'https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js'
   ]
 }

@@ -7,3 +7,7 @@ body {
     line-height: 2 !important;
     border-radius: 2px;
 }
+
+::ng-deep .city_content_top {
+    height: 40px;
+}

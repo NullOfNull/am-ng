@@ -1,14 +1,15 @@
 <nz-layout class="layout">
     <nz-header style="background-color: #fff">
-        <div class="logo">快速定位</div>
+        <div class="logo">使用单位</div>
         <ul nz-menu [nzTheme]="'light'" [nzMode]="'horizontal'" class="eam_header">
             <li>
-                <nz-input-group [nzSuffix]="suffixIconSearch" style="vertical-align: middle;">
+                <eam-query-list (itemClick)="onItemClick($event)"></eam-query-list>
+                <!-- <nz-input-group [nzSuffix]="suffixIconSearch" style="vertical-align: middle;">
                     <input type="text" nz-input placeholder="请输入地址关键字..." (select)="onSelect($event)" />
                 </nz-input-group>
                 <ng-template #suffixIconSearch>
                     <i nz-icon type="search"></i>
-                </ng-template>
+                </ng-template> -->
             </li>
             <li>
                 <nz-input-group nzCompact style="vertical-align: middle; display: inline-block;">
@@ -16,32 +17,36 @@
                         <nz-option [nzLabel]="'资产名称'" [nzValue]="'AMName'"></nz-option>
                         <nz-option [nzLabel]="'资产编号'" [nzValue]="'AMCode'"></nz-option>
                     </nz-select>
-                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <nz-input-group style="width:200px" nzSearch [nzAddOnAfter]="suffixIconButton">
                         <input type="text" nz-input placeholder="资产定位" [(ngModel)]="queryValue" />
                     </nz-input-group>
-                    <ng-template #suffixIconButton>
-                        <button nz-button nzType="primary" nzSearch (click)="onSearchClick()"><i nz-icon type="search"></i></button>
-                    </ng-template>
                 </nz-input-group>
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch (click)="onSearchClick()"><i nz-icon
+                            type="search"></i></button>
+                </ng-template>
+            </li>
+            <li>
+                <button nz-button nzType="primary" (click)="onAllClick($event)">全部</button>
             </li>
         </ul>
     </nz-header>
     <nz-content style="padding:4px;background-color: #eceff1;border-top: 4px solid #1890ff;">
         <nz-layout style="background: #eceff1">
-            <nz-sider [nzWidth]="300" style="overflow: auto; position: fixed; left: 0 ;background-color:inherit;height: 840px">
-                <eam-amcardlist #eamcardlist></eam-amcardlist>
+            <nz-sider [nzWidth]="300"
+                style="overflow: auto; position: fixed; left: 0 ;background-color:inherit;height: 840px">
+                <eam-amcardlist #eamcardlist (rowClick)="onRowClick($event)"></eam-amcardlist>
             </nz-sider>
             <nz-content style="min-height:840px; padding: 4px 4px 4px 0;margin-left: 300px">
-                <!-- <ngx-amap #eammap class="eam_map" [resizeEnable]="true" [center]="[116.397428, 39.90923]" [zoom]="13">
-                    <amap-tool-bar></amap-tool-bar>
-                    <amap-marker-clusterer [gridSize]="80">
-                        <amap-marker *ngFor="let item of markers" [position]="item.pos" [extData]="item.posid" [inCluster]="true" (markerClick)="onMarkerClick($event)"></amap-marker>
-                    </amap-marker-clusterer>
-                </ngx-amap> -->
                 <baidu-map #eammap class="eam_map" [options]="opts">
                     <control type="maptype" [options]="mapTypeOpts"></control>
                     <control type="navigation" [options]="naviOpts"></control>
-                    <marker-clusterer #eammarkers [options]="clustererOptions" (loaded)="markerClustererLoaded($event)" (markerClick)="onMarkerClick($event)"></marker-clusterer>
+                    <control type="citylist" [options]="cityListOpts"></control>
+                    <marker *ngFor="let item of markerOptions" [point]="item.point" [options]="item.options"
+                        (loaded)="onMarkerLoaded($event)" (clicked)="onSingleMarkerClicked($event)">
+                    </marker>
+                    <marker-clusterer #eammarkers [options]="clustererOptions" (loaded)="markerClustererLoaded($event)"
+                        (markerClick)="onMarkerClick($event)"></marker-clusterer>
                 </baidu-map>
             </nz-content>
         </nz-layout>

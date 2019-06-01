@@ -22,7 +22,7 @@ export class ControlComponent implements OnInit, OnDestroy {
 
   private control: BControl
 
-  constructor(private _service: MapService) {}
+  constructor(private _service: MapService) { }
 
   public ngOnInit() {
     nullCheck(this.type, 'type is required for <control>')
@@ -60,6 +60,9 @@ export class ControlComponent implements OnInit, OnDestroy {
     }
     if (type === 'panorama') {
       return new window.BMap.PanoramaControl()
+    }
+    if (type === 'citylist') {
+      return new window.BMap.CityListControl(options)
     }
     throw new Error(`Unsupported type:${type} of control`)
   }

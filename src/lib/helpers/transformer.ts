@@ -8,7 +8,9 @@ import {
   MapTypeControlOptions,
   NavigationControlOptions,
   OverviewMapControlOptions,
-  ScaleControlOptions
+  ScaleControlOptions,
+  BCityControlOptions,
+  CityListControlOptinos
 } from '../types/Control'
 import { BIcon, IconOptions } from '../types/Icon'
 import { BMarkerOptions, MarkerOptions } from '../types/Marker'
@@ -101,7 +103,9 @@ export function toMarkerOptions(options: MarkerOptions): BMarkerOptions {
   if (!isNull(options.shadow)) {
     opts.shadow = toIcon(options.shadow.imageUrl, options.shadow.size, options.shadow)
   }
-
+  if (!isNull(options.extData)) {
+    opts['extData'] = options.extData
+  }
   return opts
 }
 
@@ -267,6 +271,21 @@ export function toMarkerClustererOptions(options: MarkerClustererOptions): BMark
   if (options.styles) {
     opts.styles = options.styles.filter(s => s).map(s => toTextIconStyle(s))
   }
-
+  if (options.updateText) {
+    opts.updateText = options.updateText
+  }
   return opts
+}
+export function toCityListControlOptions(options: CityListControlOptinos): BCityControlOptions {
+  const opts: BCityControlOptions = {}
+
+  if (!options) {
+    return opts
+  }
+  if (!isNull(options.anchor)) {
+    opts.anchor = options.anchor
+  }
+  if (!isNull(options.offset)) {
+    opts.offset = toSize(options.offset)
+  }
 }

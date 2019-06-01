@@ -12,9 +12,15 @@
     color: #0d1a26;
 }
 
+
 .eam_header li {
     display: inline-block;
     margin-left: 20px;
+    width: 300px;
+    height: 64px;
+    vertical-align: middle;
+    position: relative;
+    line-height: 64px;
 }
 
 .eam_header {

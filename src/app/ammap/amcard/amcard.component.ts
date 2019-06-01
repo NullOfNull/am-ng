@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { CardInfo } from 'src/app/types/enity';
 
 @Component({
   selector: 'eam-amcard',
@@ -6,10 +8,16 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./amcard.component.css']
 })
 export class AmcardComponent implements OnInit {
-  @Input() data: any = {};
+  @Output() itemClick = new EventEmitter();
+  @Input() data: CardInfo;
   constructor() { }
 
   ngOnInit() {
   }
-
+  onLocationClick(e) {
+    this.itemClick.emit({
+      event: e,
+      data: this.data
+    });
+  }
 }

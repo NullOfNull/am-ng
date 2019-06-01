@@ -4,35 +4,37 @@ import { BMapType } from './MapType'
 import { MapTypeEnum } from './Map'
 
 export interface BControlConstructor {
-  new (opts: any): BControl
+  new(opts: any): BControl
 }
 
-export interface BControl {}
+export interface BControl { }
 
 export interface BNavigationControlConstructor extends BControlConstructor {
-  new (opts: BNavigationControlOptions): BNavigationControl
+  new(opts: BNavigationControlOptions): BNavigationControl
 }
 
 export interface BOverviewMapControlConstructor extends BControlConstructor {
-  new (opts: BOverviewMapControlOptions): BOverviewMapControl
+  new(opts: BOverviewMapControlOptions): BOverviewMapControl
 }
 
 export interface BScaleControlConstructor extends BControlConstructor {
-  new (opts: BScaleControlOptions): BScaleControl
+  new(opts: BScaleControlOptions): BScaleControl
 }
 
 export interface BMapTypeControlConstructor extends BControlConstructor {
-  new (opts: BMapTypeControlOptions): BMapTypeControl
+  new(opts: BMapTypeControlOptions): BMapTypeControl
 }
 
 export interface BGeolocationConstructor extends BControlConstructor {
-  new (opts: BGeolocationControlOptions): BGeolocationControl
+  new(opts: BGeolocationControlOptions): BGeolocationControl
 }
 
 export interface BPanoramaControlConstructor extends BControlConstructor {
-  new (): BPanoramaControlControl
+  new(): BPanoramaControlControl
 }
-
+export interface BCityListControlConstructor extends BControlConstructor {
+  new(opts: BCityControlOptions): BCityListControlControl
+}
 export interface BNavigationControl extends BControl {
   getType(): NavigationControlType
   setType(type: NavigationControlType): void
@@ -49,15 +51,15 @@ export interface BScaleControl extends BControl {
   setUnit(unit: LengthUnit): void
 }
 
-export interface BMapTypeControl extends BControl {}
+export interface BMapTypeControl extends BControl { }
 
 export interface BGeolocationControl extends BControl {
   location(): void
   getAddressComponent(): AddressComponent
 }
 
-export interface BPanoramaControlControl extends BControl {}
-
+export interface BPanoramaControlControl extends BControl { }
+export interface BCityListControlControl extends BControl { }
 export interface ControlOptions {
   anchor?: ControlAnchor
   offset?: Size
@@ -90,10 +92,11 @@ export interface BOverviewMapControlOptions extends BControlOptions {
   isOpen?: boolean
 }
 
-export interface ScaleControlOptions extends ControlOptions {}
+export interface ScaleControlOptions extends ControlOptions { }
 
-export interface BScaleControlOptions extends BControlOptions {}
-
+export interface BScaleControlOptions extends BControlOptions { }
+export interface CityListControlOptinos extends ControlOptions { }
+export interface BCityControlOptions extends BControlOptions { }
 export interface MapTypeControlOptions {
   type?: MapTypeControlType
   mapTypes?: Array<BMapType | MapTypeEnum>
@@ -115,7 +118,6 @@ export interface BGeolocationControlOptions extends BControlOptions {
   enableAutoLocation?: boolean
   locationIcon?: BIcon
 }
-
 export enum ControlAnchor {
   BMAP_ANCHOR_TOP_LEFT = 0,
   BMAP_ANCHOR_TOP_RIGHT = 1,
@@ -149,4 +151,4 @@ export interface AddressComponent {
   province: string
 }
 
-export type ControlType = 'navigation' | 'overviewmap' | 'scale' | 'maptype' | 'geolocation' | 'panorama'
+export type ControlType = 'navigation' | 'overviewmap' | 'scale' | 'maptype' | 'geolocation' | 'panorama' | 'citylist'

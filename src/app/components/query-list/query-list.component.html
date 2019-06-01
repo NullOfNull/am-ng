@@ -1,0 +1,28 @@
+<div class="map-search">
+    <nz-input-group class="search-input" nzSearch [nzSuffix]="suffixIconButton">
+        <input type="text" nz-input [(ngModel)]="searchText" (keyup)="txtKeyup($event)">
+        <i class="anticon anticon-close-circle" (click)="closeSearch()"
+            *ngIf="searchText||(!searchText&&searchResultActive)"></i>
+        <ng-template #suffixIconButton style="right: 0">
+            <button nz-button nzType="primary" nzSearch (click)="search()">
+                <i class="anticon anticon-search"></i>
+            </button>
+        </ng-template>
+    </nz-input-group>
+    <nz-list class="search-result" [class.active]="searchResultActive" [nzDataSource]="searchMarkers"
+        [nzLoading]="loading" [nzItemLayout]="'vertical'" [nzRenderItem]="item" [nzPagination]="pagination" nzBordered
+        nzSize="small">
+        <ng-template #item let-item let-index="index">
+            <nz-list-item (click)="locateSelectMarker(item)">
+                <span class="indexBg">
+                    <span>{{index+1}}</span>
+                </span>
+                <span class="name ellipsis">{{item.name}}</span>
+            </nz-list-item>
+        </ng-template>
+        <ng-template #pagination>
+            <nz-pagination [nzPageSize]="pageSize" [nzTotal]="total" nzSize="small" (nzPageIndexChange)="search($event)"
+                [nzSimple]="total>100"></nz-pagination>
+        </ng-template>
+    </nz-list>
+</div>

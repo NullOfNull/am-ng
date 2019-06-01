@@ -29,14 +29,16 @@ export class MarkerComponent implements OnInit, OnChanges, OnDestroy {
 
   private marker: BMarker
 
-  constructor(private _service: MapService) {}
+  constructor(private _service: MapService) { }
 
   public ngOnInit() {
     nullCheck(this.point, 'point is required for <marker>')
 
     this._service
       .addOverlay(() => {
-        return (this.marker = new window.BMap.Marker(toPoint(this.point), toMarkerOptions(this.options)))
+        this.marker = new window.BMap.Marker(toPoint(this.point), toMarkerOptions(this.options))
+        this.marker['extData'] = this.options.extData
+        return this.marker
       })
       .then(({ map }) => {
         this.loaded.emit(this.marker)
@@ -86,7 +88,7 @@ export class MarkerComponent implements OnInit, OnChanges, OnDestroy {
     if (!isNull(options.title)) {
       this.marker.setTitle(options.title)
     }
-    if(!isNull(options.extData)){
+    if (!isNull(options.extData)) {
       this.marker['extData'] = options.extData;
     }
   }

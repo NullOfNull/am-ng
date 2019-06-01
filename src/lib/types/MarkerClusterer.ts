@@ -1,9 +1,10 @@
 import { BMarker, Marker } from './Marker'
 import { BTextIconStyle, TextIconStyle } from './TextIconOverlay'
 import { BMapInstance } from './Map'
+import { BPoint } from './Point';
 
 export interface BMarkerClustererConstructor {
-  new (map: BMapInstance, options?: BMarkerClustererOptions): BMarkerClusterer
+  new(map: BMapInstance, options?: BMarkerClustererOptions): BMarkerClusterer
 }
 
 export interface BMarkerClusterer {
@@ -24,8 +25,14 @@ export interface BMarkerClusterer {
   setMaxZoom(maxZoom: number): void
   setMinClusterSize(size: number): void
   setStyles(styles: Array<BTextIconStyle>): void
+  getClusters(): Array<BCluster>
+  setUpdateTextFunc(func: Function): void
 }
-
+export interface BCluster {
+  isMarkerInCluster(marker: BMarker): boolean
+  isReal(): boolean
+  getCenter(): BPoint
+}
 export interface BMarkerClustererOptions {
   markers?: Array<BMarker>
   girdSize?: number
@@ -33,6 +40,7 @@ export interface BMarkerClustererOptions {
   minClusterSize?: number
   isAverangeCenter?: boolean
   styles?: Array<BTextIconStyle>
+  updateText?: Function
 }
 
 export interface MarkerClustererOptions {
@@ -42,4 +50,5 @@ export interface MarkerClustererOptions {
   minClusterSize?: number
   isAverangeCenter?: boolean
   styles?: Array<TextIconStyle>
+  updateText?: Function
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { RestGspService } from '../../service/rest-gsp.service';
-import { EventEmitter } from 'protractor';
+import { EventEmitter } from '@angular/core';
+import { CardInfo } from 'src/app/types/enity';
 
 @Component({
   selector: 'eam-amcardlist',
@@ -8,13 +9,14 @@ import { EventEmitter } from 'protractor';
   styleUrls: ['./amcardlist.component.css']
 })
 export class AmcardlistComponent implements OnInit {
+  @Output() rowClick = new EventEmitter();
   private _restGspService: RestGspService;
   private loading: boolean = false;
   public pageSize: number = 5;
   public pageTotal: number = 0;
   public pageIndex: number = 1;
-  public data: any[] = [];//与当前列表数据绑定
-  listData: Array<object> = [];//完整的list数据
+  public data: Array<CardInfo> = [];//与当前列表数据绑定
+  listData: Array<CardInfo> = [];//完整的list数据
   constructor(restGspService: RestGspService, private changeRef: ChangeDetectorRef) {
     this._restGspService = restGspService;
   }
@@ -32,10 +34,14 @@ export class AmcardlistComponent implements OnInit {
     }
     this.loading = false;
   }
+  onItemClick(e) {
+    this.rowClick.emit(e);
+    //console.log(item);
+  }
   /**
    * setListData设置表单数据
    */
-  public setListData(list: Array<object>) {
+  public setListData(list: Array<CardInfo>) {
     this.loading = true;
     this.listData = list;
     if (this.listData && this.listData.length > 0) {
