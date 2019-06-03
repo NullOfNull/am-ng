@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { RestGspService } from 'src/app/service/rest-gsp.service';
 import { AmcardlistComponent } from '../amcardlist/amcardlist.component';
 import { MarkerClustererOptions, BMarkerClusterer } from 'src/lib/types/MarkerClusterer';
 import { Marker, MapTypeControlOptions, MapTypeControlType, MapTypeEnum, NavigationControlOptions, ControlAnchor, NavigationControlType, MarkerOptions, BMarker, Animation } from 'src/lib';
-import { CardInfo, PosInfo } from 'src/app/types/enity';
+import { CardInfo, PosInfo, CompanyInfo } from 'src/app/types/enity';
 import { CityListControlOptinos } from 'src/lib/types/Control';
 
 @Component({
@@ -25,7 +25,8 @@ export class MapMainComponent implements OnInit {
   public mapTypeOpts: MapTypeControlOptions
   public naviOpts: NavigationControlOptions
   public cityListOpts: CityListControlOptinos
-  constructor(restGspService: RestGspService) {
+  public loading: boolean = false
+  constructor(restGspService: RestGspService, private changeRef: ChangeDetectorRef) {
     this._restGspService = restGspService;
     this.opts = {
       centerAndZoom: {
@@ -78,13 +79,14 @@ export class MapMainComponent implements OnInit {
   getMarkers() {
     let options = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
-      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMCommCore',
+      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMMapCoreNew',
       method: 'GetPosData',
       params: []
     }
     let invokeObject: Promise<void> = new Promise<void>((resolve: Function, reject: Function) => {
-      this._restGspService.invoke(options).then((data: Array<PosInfo>) => {
-        for (const item of data) {
+      this._restGspService.invoke(options).then((data) => {
+        let dataObj: Array<PosInfo> = JSON.parse(data)
+        for (const item of dataObj) {
           this.bmarkers.push({
             point: {
               lng: item.pos[0],
@@ -121,6 +123,7 @@ export class MapMainComponent implements OnInit {
         zoom: 13,
       }
     }
+    //this.changeRef.detectChanges();
   }
   /**
    * 标记点点击事件
@@ -130,20 +133,22 @@ export class MapMainComponent implements OnInit {
     let posid: string = e.marker.extData.posid;
     let options: object = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
-      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMCommCore',
-      method: 'GetCardList',
+      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMMapCoreNew',
+      method: 'GetCardListByPos',
       params: [posid]
     }
     if (posid) {
+      this.loading = true;
       this._restGspService.invoke(options).then(data => {
-        let cardList: Array<CardInfo> = data[posid];
+        let cardList: Array<CardInfo> = JSON.parse(data)
         if (cardList) {
           this.eamcardlist.setListData(cardList);
         }
         else {
           this.eamcardlist.setListData([]);
         }
-      })
+        this.loading = false;
+      }).finally(() => { this.loading = false; })
     }
   }
   /**
@@ -153,12 +158,13 @@ export class MapMainComponent implements OnInit {
     if (this.queryType && this.queryValue) {
       let options: object = {
         assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
-        className: 'Genersoft.AM.DAGL.AMDAGLCore.AMCommCore',
-        method: 'GetCardByName',
+        className: 'Genersoft.AM.DAGL.AMDAGLCore.AMMapCoreNew',
+        method: 'GetCardList',
         params: [this.queryType, this.queryValue]
       }
+      this.loading = true;
       this._restGspService.invoke(options).then(data => {
-        let cardList: Array<CardInfo> = data[this.queryValue];
+        let cardList: Array<CardInfo> = JSON.parse(data)
         if (cardList) {
           this.eamcardlist.setListData(cardList);
           if (cardList.length == 1) {
@@ -169,6 +175,9 @@ export class MapMainComponent implements OnInit {
         else {
           this.eamcardlist.setListData([]);
         }
+        this.loading = false;
+      }).finally(() => {
+        this.loading = false;
       })
     }
   }
@@ -194,23 +203,25 @@ export class MapMainComponent implements OnInit {
       this.clustererOptions = {
         markers: []
       }
+      this.changeRef.markForCheck();
     }
   }
   /**
    * 使用单位点击事件
    * @param e 
    */
-  onItemClick(e) {
-    console.log(e);
+  onItemClick(e: CompanyInfo) {
     let options = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
-      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMCommCore',
-      method: 'GetPosData',
-      params: []
+      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMMapCoreNew',
+      method: 'GetPosListByComp',
+      params: [e.id]
     }
-    this._restGspService.invoke(options).then((data: Array<PosInfo>) => {
+    this.loading = true;
+    this._restGspService.invoke(options).then((data) => {
       let markers = [];
-      for (const item of data) {
+      let dataObj: Array<PosInfo> = JSON.parse(data)
+      for (const item of dataObj) {
         markers.push({
           point: {
             lng: item.pos[0],
@@ -225,7 +236,8 @@ export class MapMainComponent implements OnInit {
       this.clustererOptions = {
         markers: []
       }
-    })
+      this.loading = false;
+    }).finally(() => { this.loading = false; })
   }
   onAllClick(e) {
     this.markerOptions = []
@@ -239,20 +251,22 @@ export class MapMainComponent implements OnInit {
     let posid: string = e.marker.extData.posid;
     let options: object = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
-      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMCommCore',
-      method: 'GetCardList',
+      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMMapCoreNew',
+      method: 'GetCardListByPos',
       params: [posid]
     }
+    this.loading = true;
     if (posid) {
       this._restGspService.invoke(options).then(data => {
-        let cardList: Array<CardInfo> = data[posid];
+        let cardList: Array<CardInfo> = JSON.parse(data)
         if (cardList) {
           this.eamcardlist.setListData(cardList);
         }
         else {
           this.eamcardlist.setListData([]);
         }
-      })
+        this.loading = false;
+      }).finally(() => { this.loading = false; })
     }
   }
 }

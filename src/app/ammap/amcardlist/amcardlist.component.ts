@@ -10,8 +10,8 @@ import { CardInfo } from 'src/app/types/enity';
 })
 export class AmcardlistComponent implements OnInit {
   @Output() rowClick = new EventEmitter();
+  @Input() loading: boolean = false;
   private _restGspService: RestGspService;
-  private loading: boolean = false;
   public pageSize: number = 5;
   public pageTotal: number = 0;
   public pageIndex: number = 1;
@@ -42,7 +42,6 @@ export class AmcardlistComponent implements OnInit {
    * setListData设置表单数据
    */
   public setListData(list: Array<CardInfo>) {
-    this.loading = true;
     this.listData = list;
     if (this.listData && this.listData.length > 0) {
       this.pageTotal = this.listData.length;
@@ -53,8 +52,8 @@ export class AmcardlistComponent implements OnInit {
     else {
       this.data = [];
       this.pageTotal = 0;
+      this.pageIndex = 0;
     }
-    this.loading = false;
     this.changeRef.detectChanges();
   }
 }

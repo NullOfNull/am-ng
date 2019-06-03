@@ -21,7 +21,7 @@ import { BMarker } from '../types/Marker';
 const LIB_URLS = {
   key: 'markerClusterer',
   scripts: [
-    '/assets/MarkerCluster.js',
+    '/cwbase/web/amweb/am-map/assets/MarkerCluster.js',
     'https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js'
   ]
 }

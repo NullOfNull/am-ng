@@ -1,1 +1,1 @@
-export const GSPFRAME = false;
+export const GSPFRAME = true;

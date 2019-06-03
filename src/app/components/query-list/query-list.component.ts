@@ -41,7 +41,7 @@ export class QueryListComponent implements OnInit {
     }
     let options = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
-      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMCommCore',
+      className: 'Genersoft.AM.DAGL.AMDAGLCore.AMMapCoreNew',
       method: 'GetCompByName',
       params: [this.searchText]
     }
@@ -49,7 +49,7 @@ export class QueryListComponent implements OnInit {
     console.log(this.searchText);
     this._restGspService.invoke(options).then(data => {
       this.total = data.totalSize;
-      this.searchMarkers = data[this.searchText];
+      this.searchMarkers = JSON.parse(data);
       this.loading = false;
     }).finally(() => {
       this.loading = false;
