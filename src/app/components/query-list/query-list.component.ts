@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Output } from '@angular/core';
-import { getLocaleDateFormat } from '@angular/common';
+import { Component, OnInit, ChangeDetectorRef, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { RestGspService } from 'src/app/service/rest-gsp.service';
+import { CommonHelper } from 'src/app/service/common-helper';
 
 @Component({
   selector: 'eam-query-list',
@@ -10,7 +10,7 @@ import { RestGspService } from 'src/app/service/rest-gsp.service';
 })
 export class QueryListComponent implements OnInit {
 
-  constructor(private cdRef: ChangeDetectorRef, private _restGspService: RestGspService) { }
+  constructor(private cdRef: ChangeDetectorRef, private _restGspService: RestGspService, private commonHelper: CommonHelper) { }
   @Output() itemClick = new EventEmitter();
   ngOnInit() {
   }
@@ -33,12 +33,6 @@ export class QueryListComponent implements OnInit {
     }
     this.searchResultActive = true;
     pageIndex = pageIndex || 1;
-    var data = {
-      page: 1, size: 10, totalSize: 15, content: [{
-        id: "58eff8ca7b6411e8bf328cec4b62001a",
-        name: "test1"
-      }]
-    }
     let options = {
       assembly: 'Genersoft.AM.DAGL.AMDAGLCore',
       className: 'Genersoft.AM.DAGL.AMDAGLCore.AMMapCoreNew',
@@ -48,8 +42,10 @@ export class QueryListComponent implements OnInit {
     this.loading = true;
     console.log(this.searchText);
     this._restGspService.invoke(options).then(data => {
-      this.total = data.totalSize;
-      this.searchMarkers = JSON.parse(data);
+      let list: Array<any> = JSON.parse(data);
+      let pagedData = this.commonHelper.GetPageData(list, pageIndex, this.pageSize);
+      this.total = pagedData.pageTotal
+      this.searchMarkers = pagedData.content;
       this.loading = false;
     }).finally(() => {
       this.loading = false;

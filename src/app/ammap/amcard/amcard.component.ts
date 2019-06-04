@@ -9,6 +9,7 @@ import { CardInfo } from 'src/app/types/enity';
 })
 export class AmcardComponent implements OnInit {
   @Output() itemClick = new EventEmitter();
+  @Output() cardClick = new EventEmitter();
   @Input() data: CardInfo;
   constructor() { }
 
@@ -19,5 +20,11 @@ export class AmcardComponent implements OnInit {
       event: e,
       data: this.data
     });
+  }
+  onCardClick(e) {
+    this.cardClick.emit({
+      event: e,
+      data: this.data
+    })
   }
 }

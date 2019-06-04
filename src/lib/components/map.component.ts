@@ -14,6 +14,8 @@ import { MapService } from '../providers/mapService'
 import { BMapInstance, MapOptions } from '../types/Map'
 
 import { nullCheck } from '../helpers/validate'
+import { Point } from '../types/Point';
+import { toPoints } from '../helpers/transformer';
 
 @Component({
   providers: [MapService],
@@ -64,7 +66,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   @ViewChild('mapinstance') private mapInstance: ElementRef
 
-  constructor(private _service: MapService) {}
+  constructor(private _service: MapService) { }
 
   public ngOnInit() {
     nullCheck(this.options, 'options is required for <baidu-map>')
@@ -98,4 +100,9 @@ export class MapComponent implements OnInit, OnChanges {
       this.clicked.emit(e)
     })
   }
+  public setFitView(points: Array<Point>) {
+    debugger;
+    this._service.setZoom(toPoints(points));
+  }
 }
+

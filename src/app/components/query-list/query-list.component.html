@@ -13,7 +13,7 @@
         [nzLoading]="loading" [nzItemLayout]="'vertical'" [nzRenderItem]="item" [nzPagination]="pagination" nzBordered
         nzSize="small">
         <ng-template #item let-item let-index="index">
-            <nz-list-item (click)="locateSelectMarker(item)">
+            <nz-list-item (click)="locateSelectMarker(item)" nz-tooltip nzPlacement="right" nzTitle="{{item.name}}">
                 <span class="indexBg">
                     <span>{{index+1}}</span>
                 </span>

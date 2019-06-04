@@ -1,13 +1,13 @@
 <nz-card [nzHoverable]="true" [nzActions]="[actionSetting, actionEdit]" class="eam-map-amcard">
     <p>编号:{{data.amcode}}</p>
     <p>名称:{{data.amname}}</p>
-    <p>单位:{{data.compname}}</p>
-    <p>数量:{{data.amqty}}</p>
+    <p>使用单位:{{data.usecompname}}</p>
+    <p>价值:{{data.orival}}</p>
 
     <ng-template #actionSetting>
         <i nz-icon nzType="environment" nzTheme="outline" (click)="onLocationClick($event)"></i>
     </ng-template>
     <ng-template #actionEdit>
-        <i nz-icon nzType="file-text" nzTheme="outline"></i>
+        <i nz-icon nzType="file-text" nzTheme="outline" (click)="onCardClick($event)"></i>
     </ng-template>
 </nz-card>

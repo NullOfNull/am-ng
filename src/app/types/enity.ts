@@ -7,6 +7,8 @@ export interface CardInfo {
     pos: Array<number>;
     compname: string;
     usecompname: string;
+    amqty?: number
+    orival?: number
 }
 export interface PosInfo {
     posid: string;

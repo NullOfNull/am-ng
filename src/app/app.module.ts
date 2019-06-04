@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AmmapModule } from './ammap/ammap.module';
 import { WindowRef, DocumentRef } from './service/browers-globals';
 import { RestGspService } from './service/rest-gsp.service';
+import { CommonHelper } from './service/common-helper';
 
 @NgModule({
   declarations: [
@@ -16,10 +17,11 @@ import { RestGspService } from './service/rest-gsp.service';
     AppRoutingModule,
     AmmapModule,
   ],
-  providers:[
+  providers: [
     WindowRef,
     DocumentRef,
-    RestGspService
+    RestGspService,
+    CommonHelper
   ],
   bootstrap: [AppComponent]
 })

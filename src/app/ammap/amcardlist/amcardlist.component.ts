@@ -10,6 +10,7 @@ import { CardInfo } from 'src/app/types/enity';
 })
 export class AmcardlistComponent implements OnInit {
   @Output() rowClick = new EventEmitter();
+  @Output() cardClick = new EventEmitter();
   @Input() loading: boolean = false;
   private _restGspService: RestGspService;
   public pageSize: number = 5;
@@ -37,6 +38,9 @@ export class AmcardlistComponent implements OnInit {
   onItemClick(e) {
     this.rowClick.emit(e);
     //console.log(item);
+  }
+  onCardClick(e) {
+    this.cardClick.emit(e)
   }
   /**
    * setListData设置表单数据

@@ -2,7 +2,8 @@
     [nzRenderItem]="item" [nzSplit]=false>
     <ng-template #item let-item>
         <nz-list-item style=" padding:4px 10px 4px 4px;background-color: #eceff1 ">
-            <eam-amcard [data]="item" (itemClick)="onItemClick($event)" style="width:100% "></eam-amcard>
+            <eam-amcard [data]="item" (itemClick)="onItemClick($event)" (cardClick)="onCardClick($event)"
+                style="width:100% "></eam-amcard>
         </nz-list-item>
     </ng-template>
     <div class="eam-pagination ">

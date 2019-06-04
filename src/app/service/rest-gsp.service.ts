@@ -17,7 +17,7 @@ export class RestGspService {
     if (this._restLoaded) {
       return this._restLoaded;
     }
-    if(GSPFRAME){
+    if (GSPFRAME) {
       const script$ = this._documentRef.getNativeDocument().createElement('script');
       script$.type = 'text/javascript';
       script$.src = '/cwbase/web/scripts/jquery-1.10.2.js';
@@ -47,7 +47,7 @@ export class RestGspService {
     }
     invokeObject = new Promise<any>((resolve: Function, reject: Function) => {
       //判断是否在gsp框架下 如果是则进行请求数据，不是的话返回测试数据，测试数据根据方法名标记
-      if(GSPFRAME){
+      if (GSPFRAME) {
         gsp.rtf.rest.invoke(optionsService, function (data) {
           var obj = JSON.parse(data);
           if (obj && obj.resultType == 0) {//成功
@@ -75,15 +75,22 @@ export class RestGspService {
           reject(error);
         });
       }
-      else{
+      else {
         options = JSON.parse(options);
         resolve(MOCK_DATA[options.method]);
       }
-      
+
     }
     );
     return invokeObject;
 
   }
-
+  public winFormCardView(amid: string) {
+    this._windowRef.getNativeWindow().external['Invokemethod'](
+      'Genersoft.AM.DAGL.AMDAGLController.dll',
+      'Genersoft.AM.DAGL.AMDAGLController.ChromeViewControl',
+      'ViewCard',
+      amid
+    )
+  }
 }

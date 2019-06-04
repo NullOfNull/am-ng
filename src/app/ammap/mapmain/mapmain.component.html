@@ -35,19 +35,24 @@
         <nz-layout style="background: #eceff1">
             <nz-sider [nzWidth]="300"
                 style="overflow: auto; position: fixed; left: 0 ;background-color:inherit;height: 840px">
-                <eam-amcardlist #eamcardlist (rowClick)="onRowClick($event)" [loading]="loading"></eam-amcardlist>
+                <eam-amcardlist #eamcardlist (rowClick)="onRowClick($event)" (cardClick)="onCardClick($event)"
+                    [loading]="loading"></eam-amcardlist>
             </nz-sider>
             <nz-content style="min-height:840px; padding: 4px 4px 4px 0;margin-left: 300px">
-                <baidu-map #eammap class="eam_map" [options]="opts">
-                    <control type="maptype" [options]="mapTypeOpts"></control>
-                    <control type="navigation" [options]="naviOpts"></control>
-                    <control type="citylist" [options]="cityListOpts"></control>
-                    <marker *ngFor="let item of markerOptions" [point]="item.point" [options]="item.options"
-                        (loaded)="onMarkerLoaded($event)" (clicked)="onSingleMarkerClicked($event)">
-                    </marker>
-                    <marker-clusterer #eammarkers [options]="clustererOptions" (loaded)="markerClustererLoaded($event)"
-                        (markerClick)="onMarkerClick($event)"></marker-clusterer>
-                </baidu-map>
+                <nz-spin [nzSpinning]="isSpinning">
+                    <baidu-map #eammap class="eam_map" [options]="opts">
+                        <control type="maptype" [options]="mapTypeOpts"></control>
+                        <control type="navigation" [options]="naviOpts"></control>
+                        <control type="citylist" [options]="cityListOpts"></control>
+                        <marker *ngFor="let item of markerOptions" [point]="item.point" [options]="item.options"
+                            (loaded)="onMarkerLoaded($event)" (clicked)="onSingleMarkerClicked($event)">
+                        </marker>
+                        <marker-clusterer #eammarkers [options]="clustererOptions"
+                            (loaded)="markerClustererLoaded($event)" (markerClick)="onMarkerClick($event)">
+                        </marker-clusterer>
+                    </baidu-map>
+                </nz-spin>
+
             </nz-content>
         </nz-layout>
     </nz-content>

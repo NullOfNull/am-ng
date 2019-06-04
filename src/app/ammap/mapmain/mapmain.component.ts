@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { RestGspService } from 'src/app/service/rest-gsp.service';
 import { AmcardlistComponent } from '../amcardlist/amcardlist.component';
 import { MarkerClustererOptions, BMarkerClusterer } from 'src/lib/types/MarkerClusterer';
-import { Marker, MapTypeControlOptions, MapTypeControlType, MapTypeEnum, NavigationControlOptions, ControlAnchor, NavigationControlType, MarkerOptions, BMarker, Animation } from 'src/lib';
+import { Marker, MapTypeControlOptions, MapTypeControlType, MapTypeEnum, NavigationControlOptions, ControlAnchor, NavigationControlType, BMarker, Animation, Point } from 'src/lib';
 import { CardInfo, PosInfo, CompanyInfo } from 'src/app/types/enity';
 import { CityListControlOptinos } from 'src/lib/types/Control';
+import { MapComponent } from 'src/lib/components/map.component';
 
 @Component({
   selector: 'eam-mapmain',
@@ -15,6 +16,8 @@ export class MapMainComponent implements OnInit {
 
   @ViewChild('eamcardlist')
   private eamcardlist: AmcardlistComponent;
+  @ViewChild('eammap')
+  private eammap: MapComponent;
   private _restGspService: RestGspService;
   public markerOptions: Array<object> = [];
   public queryType: string = 'AMCode';
@@ -26,7 +29,9 @@ export class MapMainComponent implements OnInit {
   public naviOpts: NavigationControlOptions
   public cityListOpts: CityListControlOptinos
   public loading: boolean = false
+  public isSpinning: boolean = false;
   constructor(restGspService: RestGspService, private changeRef: ChangeDetectorRef) {
+    this.isSpinning = true;
     this._restGspService = restGspService;
     this.opts = {
       centerAndZoom: {
@@ -64,14 +69,15 @@ export class MapMainComponent implements OnInit {
     }
   }
   ngOnInit() {
-
   }
   /**
    * 点聚合加载后事件
    * @param e 
    */
   markerClustererLoaded(e: BMarkerClusterer) {
-    this.getMarkers();
+    this.getMarkers().then(() => {
+      this.isSpinning = false;
+    })
   }
   /**
    * 获取设置资产点标记
@@ -123,7 +129,6 @@ export class MapMainComponent implements OnInit {
         zoom: 13,
       }
     }
-    //this.changeRef.detectChanges();
   }
   /**
    * 标记点点击事件
@@ -203,7 +208,15 @@ export class MapMainComponent implements OnInit {
       this.clustererOptions = {
         markers: []
       }
-      this.changeRef.markForCheck();
+      this.changeRef.detectChanges();
+    }
+  }
+  onCardClick(e) {
+    let card: CardInfo = e.data;
+    if (card.amid) {
+      this.isSpinning = true;
+      this._restGspService.winFormCardView(card.amid)
+      this.isSpinning = false;
     }
   }
   /**
@@ -217,11 +230,16 @@ export class MapMainComponent implements OnInit {
       method: 'GetPosListByComp',
       params: [e.id]
     }
-    this.loading = true;
+    this.isSpinning = true;
     this._restGspService.invoke(options).then((data) => {
       let markers = [];
+      let points: Array<Point> = [];
       let dataObj: Array<PosInfo> = JSON.parse(data)
       for (const item of dataObj) {
+        points.push({
+          lng: item.pos[0],
+          lat: item.pos[1]
+        })
         markers.push({
           point: {
             lng: item.pos[0],
@@ -236,13 +254,16 @@ export class MapMainComponent implements OnInit {
       this.clustererOptions = {
         markers: []
       }
-      this.loading = false;
-    }).finally(() => { this.loading = false; })
+      this.eammap.setFitView(points)
+    }).finally(() => { this.isSpinning = false; })
   }
   onAllClick(e) {
     this.markerOptions = []
     this.bmarkers = []
-    this.getMarkers();
+    this.isSpinning = true;
+    this.getMarkers().then(() => {
+      this.isSpinning = false;
+    })
   }
   onMarkerLoaded(e: BMarker) {
     e.setAnimation(Animation.BMAP_ANIMATION_BOUNCE);

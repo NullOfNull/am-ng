@@ -17,6 +17,7 @@ import { MarkerClustererOptions, BMarkerClusterer } from '../types/MarkerCluster
 import { ScriptLoader } from '../providers/scriptLoader'
 import { BMapInstance } from '../types/Map'
 import { BMarker } from '../types/Marker';
+import { BPoint } from '../types/Point';
 
 const LIB_URLS = {
   key: 'markerClusterer',
@@ -58,19 +59,6 @@ export class MarkerClustererComponent implements OnInit, OnChanges, OnDestroy {
 
   private resetOptions(options: MarkerClustererOptions) {
     if (!this.markerClusterer) return;//修复由于ngonit中异步加载的脚本可能导致此处执行时markerClusterer为空
-    if (options.markers) {
-      this.markerClusterer.clearMarkers()
-      this.markerClusterer.addMarkers(
-        options.markers.map(m => {
-          let marker: BMarker = new window.BMap.Marker(toPoint(m.point), toMarkerOptions(m.options));
-          if (m.options.extData) {
-            marker['extData'] = m.options.extData;
-          }
-          this.addListener(marker);
-          return marker;
-        })
-      )
-    }
     if (!isUndefined(options.girdSize)) {
       this.markerClusterer.setGridSize(options.girdSize)
     }
@@ -80,6 +68,23 @@ export class MarkerClustererComponent implements OnInit, OnChanges, OnDestroy {
     if (options.styles) {
       this.markerClusterer.setStyles(options.styles.filter(s => s).map(s => toTextIconStyle(s)))
     }
+    if (options.markers) {
+      this.markerClusterer.clearMarkers()
+      let points: Array<BPoint> = [];
+      this.markerClusterer.addMarkers(
+        options.markers.map(m => {
+          points.push(toPoint(m.point));
+          let marker: BMarker = new window.BMap.Marker(toPoint(m.point), toMarkerOptions(m.options));
+          if (m.options.extData) {
+            marker['extData'] = m.options.extData;
+          }
+          this.addListener(marker);
+          return marker;
+        })
+      )
+      this._service.setZoom(points);
+    }
+
   }
   private addListener(marker: BMarker) {
     marker.addEventListener('click', (e: any) => {
